@@ -67,6 +67,40 @@
         margin: 0;
         padding: 0;
       }
+      .grid-container1 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .grid-item {
+        padding: 10px;
+      }
+      .comments-section {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+      }
+      .comment {
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+      .delete-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #ff4d4d;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -104,5 +138,71 @@
         <img src="electric.jpg" alt="electric" />
       </div>
     </div>
+    <div class="comments-section">
+      <h2>Comments</h2>
+      <form id="comment-form">
+        <textarea
+          id="comment-input"
+          rows="4"
+          cols="50"
+          placeholder="Add your comment here..."
+        ></textarea
+        ><br />
+        <button type="submit">Submit</button>
+      </form>
+      <div id="comments-container"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const commentForm = document.getElementById("comment-form");
+        const commentInput = document.getElementById("comment-input");
+        const commentsContainer = document.getElementById("comments-container");
+
+        // Load comments from localStorage
+        const savedComments =
+          JSON.parse(localStorage.getItem("comments")) || [];
+        savedComments.forEach((commentText, index) => {
+          addCommentToDOM(commentText, index);
+        });
+
+        // Handle form submission
+        commentForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const commentText = commentInput.value.trim();
+          if (commentText) {
+            const newIndex = savedComments.length;
+            savedComments.push(commentText);
+            localStorage.setItem("comments", JSON.stringify(savedComments));
+            addCommentToDOM(commentText, newIndex);
+            commentInput.value = "";
+          }
+        });
+
+        function addCommentToDOM(commentText, index) {
+          const newComment = document.createElement("div");
+          newComment.className = "comment";
+          newComment.textContent = commentText;
+
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "delete-button";
+          deleteButton.textContent = "Delete";
+          deleteButton.addEventListener("click", function () {
+            deleteComment(index);
+          });
+
+          newComment.appendChild(deleteButton);
+          commentsContainer.appendChild(newComment);
+        }
+
+        function deleteComment(index) {
+          savedComments.splice(index, 1);
+          localStorage.setItem("comments", JSON.stringify(savedComments));
+          commentsContainer.innerHTML = "";
+          savedComments.forEach((commentText, newIndex) => {
+            addCommentToDOM(commentText, newIndex);
+          });
+        }
+      });
+    </script>
   </body>
 </html>

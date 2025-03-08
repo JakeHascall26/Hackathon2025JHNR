@@ -1,25 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>My Website</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usage</title>
     <style>
-      /* CSS for the task bar */
       .task-bar {
-        background-color: #2296e4;
-        border-radius: 11px;
+        background-color: #778da9;
+        border-radius: 100px;
         padding: 10px;
+        margin-left: 35%;
+        margin-right: 35%;
         text-align: center;
+        font-family: verdana;
+        font-weight: bold;
+        font-size: 20px;
+        width: 30%;
       }
       .task-bar a {
         margin: 0 10px;
         text-decoration: none;
-        color: #333;
+        color: #343a40;
       }
+      .task-bar a:hover {
+        color: #0d1b2a;
+      }
+
+      .grid-container1 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Three columns */
+        gap: 20px; /* Space between items */
+        padding: 20px; /* Add padding for better spacing */
+      }
+      .grid-item {
+        padding: 20px;
+        text-align: center; /* Center content inside grid items */
+      }
+      .grid-item img {
+        max-width: 100%; /* Ensures the image fits within the grid item */
+        height: auto; /* Maintains aspect ratio */
+        border-radius: 10px;
+      }
+
+      /* Center the text and adjust width */
       .center-text {
         text-align: center;
-        font-size: 24px;
+        font-size: 25px;
+        max-width: 800px; /* Adjust as needed */
+        margin: 0 auto; /* Center the paragraph horizontally */
+        font-family: verdana;
+        color: #1b263b;
+        padding: 10px 0; /* Add some vertical spacing */
       }
-      
+
+      h2,
+      h1 {
+        font-family: verdana;
+        font-size: 40px;
+        text-align: center; /* Center headings */
+        color: #0d1b2a;
+        margin: 20px 0; /* Add some spacing */
+      }
+
+      body {
+        background-color: #e0e1dd;
+        margin: 0;
+        padding: 0;
+      }
+      .grid-container1 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .grid-item {
+        padding: 10px;
+      }
+      .comments-section {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+      }
+      .comment {
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+      .delete-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #ff4d4d;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -29,12 +110,99 @@
       <a href="Solutions.html">Solutions</a>
       <a href="Usage.html">Usage</a>
     </div>
-    <p class="center-text">We are looking at how we can track our sustainability and how we can make Gonzaga a more sustainable place</p>
-    <p class="center-text">How are we going to do this?</p>
-    <p class="center-text"> Well we are looking at the energy usage and see where we can change and allow for less usage. We will also explore the different ways that we spend electricity, water, energy, how we dispose of trash and recycling and more.  </p>
-    <img src="electric.jpg" alt="electric" style="width: 33%; height: 33%;">
-    <img src="water.jpg" alt="water" style="width: 33%; height: 33%;">
-    <img src="trashandrecyc.jpg" alt="trash" style="width: 33%; height: 33%;">
-  <body>
+    <p></p>
+    <!-- Centered text -->
+    <p class="center-text">
+      How we can track our sustainability and how we can make Gonzaga a more
+      sustainable place?
+    </p>
+    <p></p>
+    <p></p>
+    <h1>How will we do this?</h1>
+    <p class="center-text">
+      Well, we are looking at the energy usage and seeing where we can change
+      and allow for less usage. We will also explore the different ways that we
+      spend electricity, water, energy, how we dispose of trash and recycling,
+      and more.
+    </p>
 
+    <!-- Grid container for images -->
+    <div class="grid-container1">
+      <div class="grid-item">
+        <img src="water.jpg" alt="water" />
+      </div>
+      <div class="grid-item">
+        <img src="trashandrecyc.jpg" alt="trashandrecyc" />
+      </div>
+      <div class="grid-item">
+        <img src="electric.jpg" alt="electric" />
+      </div>
+    </div>
+    <div class="comments-section">
+      <h2>Comments</h2>
+      <form id="comment-form">
+        <textarea
+          id="comment-input"
+          rows="4"
+          cols="50"
+          placeholder="Add your comment here..."
+        ></textarea
+        ><br />
+        <button type="submit">Submit</button>
+      </form>
+      <div id="comments-container"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const commentForm = document.getElementById("comment-form");
+        const commentInput = document.getElementById("comment-input");
+        const commentsContainer = document.getElementById("comments-container");
+
+        // Load comments from localStorage
+        const savedComments =
+          JSON.parse(localStorage.getItem("comments")) || [];
+        savedComments.forEach((commentText, index) => {
+          addCommentToDOM(commentText, index);
+        });
+
+        // Handle form submission
+        commentForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const commentText = commentInput.value.trim();
+          if (commentText) {
+            const newIndex = savedComments.length;
+            savedComments.push(commentText);
+            localStorage.setItem("comments", JSON.stringify(savedComments));
+            addCommentToDOM(commentText, newIndex);
+            commentInput.value = "";
+          }
+        });
+
+        function addCommentToDOM(commentText, index) {
+          const newComment = document.createElement("div");
+          newComment.className = "comment";
+          newComment.textContent = commentText;
+
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "delete-button";
+          deleteButton.textContent = "Delete";
+          deleteButton.addEventListener("click", function () {
+            deleteComment(index);
+          });
+
+          newComment.appendChild(deleteButton);
+          commentsContainer.appendChild(newComment);
+        }
+
+        function deleteComment(index) {
+          savedComments.splice(index, 1);
+          localStorage.setItem("comments", JSON.stringify(savedComments));
+          commentsContainer.innerHTML = "";
+          savedComments.forEach((commentText, newIndex) => {
+            addCommentToDOM(commentText, newIndex);
+          });
+        }
+      });
+    </script>
+  </body>
 </html>

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>My Website</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usage</title>
     <style>
-      /* CSS for the task bar */
       .task-bar {
         background-color: #2296e4;
         border-radius: 11px;
@@ -11,6 +12,7 @@
         text-align: center;
         font-family: verdana;
         font-weight: bold;
+        font-size: 20px;
       }
       .task-bar a {
         margin: 0 10px;
@@ -20,45 +22,63 @@
       .content {
         font-family: verdana;
       }
-      .container {
-        display: flex;
-         align-items: center;
-        justify-content: center
-    }
-
-        img {
-        max-width: 100%;
-        max-height:100%;
-    }
-
-    .text {
-        font-size: 20px;
-        padding-left: 20px;
-    }
+      .grid-container1 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two columns */
+        gap: 20px; /* Space between items */
+      }
+      .grid-item {
+        padding: 20px;
+      }
+      .grid-item img {
+        max-width: 90%; /* Ensures the image fits within the grid item */
+        height: auto; /* Maintains aspect ratio */
+        border-radius: 10px;
+      }
+      p {
+        font-size: 35px;
+        width: 30ch; /* Limits the width to approximately 30 characters */
+        overflow-wrap: break-word; /* Ensures long words break and wrap */
+        font-family: verdana;
+      }
     </style>
   </head>
   <body>
     <div class="task-bar">
-        <a href="index.html">Home</a>
-        <a href="mission.html">Mission</a>
-        <a href="Solutions.html">Solutions</a>
-        <a href="Usage.html">Usage</a>
+      <a href="index.html">Home</a>
+      <a href="mission.html">Mission</a>
+      <a href="Solutions.html">Solutions</a>
+      <a href="Usage.html">Usage</a>
     </div>
-    
-    <div class="content">
-        <h2>Energy Usage at Gonzaga</h2>
-        <div class="container">
-        <div class="text">
-            <p>On average an American classroom utilizes 10 kilowatt-hours (kWh) of 
-                electricity per square foot on an annual basis. Our rough estimate has 
-                Gonzaga at around 100,000 square feet, meaning that each year we use
-                a staggering 750,000 kilowatt-hours of electricity.</p>
-        </div>
-        <div class = "image">
-            <img src="field.png" alt="Image">
-        </div>
-        </div>
+    <p></p>
+
+    <div class="grid-container1">
+      <div class="grid-item">
+        <p>
+          On average an American classroom utilizes 10 kilowatt-hours (kWh) of
+          electricity per square foot on an annual basis. Our rough estimate has
+          Gonzaga at around 100,000 square feet, meaning that each year we use a
+          staggering 1,000,000 kilowatt-hours of electricity.
+        </p>
+      </div>
+      <div class="grid-item">
+        <img src="field.png" alt="Field" />
+      </div>
     </div>
+    <div class="grid-container1">
+      <div class="grid-item">
+        <img src="solar.png" alt="Solar" />
+      </div>
+      <div class="grid-item">
+        <p>
+          Drawing some comparisons, the average American household uses 10,649
+          kilowatt-hours of electricity per year. This means that Gonzaga uses
+          the same amount of electricity as about 94 American households.
+          Furthermore, if applied electric vehicles a car with a 1,000,000
+          kilowatt-hour battery could drive around the circumference of the
+          world 133 times (24,901).
+        </p>
+      </div>
     </div>
   </body>
 </html>

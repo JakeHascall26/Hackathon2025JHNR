@@ -20,6 +20,21 @@
       .content {
         font-family: verdana;
       }
+      .container {
+        display: flex;
+         align-items: center;
+        justify-content: center
+    }
+
+        img {
+        max-width: 100%;
+        max-height:100%;
+    }
+
+    .text {
+        font-size: 20px;
+        padding-left: 20px;
+    }
     </style>
   </head>
   <body>
@@ -32,13 +47,17 @@
     
     <div class="content">
         <h2>Energy Usage at Gonzaga</h2>
-        <div class="textbox">
+        <div class="container">
+        <div class="text">
             <p>On average an American classroom utilizes 10 kilowatt-hours (kWh) of 
                 electricity per square foot on an annual basis. Our rough estimate has 
                 Gonzaga at around 100,000 square feet, meaning that each year we use
-                a staggering 1,000,000 kilowatt-hours of electricity.</p>
+                a staggering 750,000 kilowatt-hours of electricity.</p>
         </div>
-        <img src="image.jpg" alt="Image">
+        <div class = "image">
+            <img src="field.png" alt="Image">
+        </div>
+        </div>
     </div>
     </div>
   </body>

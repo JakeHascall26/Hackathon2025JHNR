@@ -236,6 +236,86 @@
         background-color: #d63031;
       }
 
+      /* Game Styles */
+      .game-section {
+        margin: 60px auto;
+        padding: 40px;
+        background-color: #ffffff;
+        max-width: 900px;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease forwards 0.8s;
+        text-align: center;
+      }
+
+      .game-container {
+        width: 100%;
+        height: 400px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        background-color: var(--background-color);
+        margin: 20px 0;
+      }
+
+      #shipley {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: pointer;
+        transition: left 0.2s ease;
+      }
+
+      .water-drop {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        background: #6c5ce7;
+        border-radius: 50%;
+        animation: fall 3s linear;
+      }
+
+      @keyframes fall {
+        from {
+          top: -30px;
+        }
+        to {
+          top: 400px;
+        }
+      }
+
+      .game-score {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-color);
+        margin: 20px 0;
+      }
+
+      .game-controls {
+        margin-top: 20px;
+      }
+
+      .game-button {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin: 0 10px;
+        transition: background-color 0.3s ease;
+      }
+
+      .game-button:hover {
+        background-color: var(--hover-color);
+      }
+
       @media (max-width: 768px) {
         .grid-container1 {
           grid-template-columns: 1fr;
@@ -253,6 +333,10 @@
 
         .center-text {
           font-size: 1.8rem;
+        }
+
+        .game-container {
+          height: 300px;
         }
       }
     </style>
@@ -310,6 +394,23 @@
       </form>
       <div id="comments-container"></div>
     </div>
+
+    <div class="game-section">
+      <h2>Save Water with Shipley!</h2>
+      <p>
+        Help Shipley catch the water drops before they're wasted! Use left and
+        right arrow keys or tap/click the sides to move.
+      </p>
+      <div class="game-container">
+        <img src="shipley.png" id="shipley" alt="Shipley character" />
+      </div>
+      <div class="game-score">Score: <span id="score">0</span></div>
+      <div class="game-controls">
+        <button class="game-button" id="startGame">Start Game</button>
+        <button class="game-button" id="resetGame">Reset</button>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const commentForm = document.getElementById("comment-form");
@@ -360,6 +461,116 @@
             addCommentToDOM(commentText, newIndex);
           });
         }
+      });
+
+      // Game Script
+      document.addEventListener("DOMContentLoaded", function () {
+        const gameContainer = document.querySelector(".game-container");
+        const shipley = document.getElementById("shipley");
+        const scoreElement = document.getElementById("score");
+        const startButton = document.getElementById("startGame");
+        const resetButton = document.getElementById("resetGame");
+
+        let score = 0;
+        let gameActive = false;
+        let shipleyPosition = 50;
+        let dropInterval;
+
+        function moveShipley(direction) {
+          if (!gameActive) return;
+
+          if (direction === "left") {
+            shipleyPosition = Math.max(0, shipleyPosition - 5);
+          } else {
+            shipleyPosition = Math.min(100, shipleyPosition + 5);
+          }
+
+          shipley.style.left = `${shipleyPosition}%`;
+        }
+
+        function createWaterDrop() {
+          if (!gameActive) return;
+
+          const drop = document.createElement("div");
+          drop.className = "water-drop";
+          drop.style.left = `${Math.random() * 90}%`;
+          gameContainer.appendChild(drop);
+
+          drop.addEventListener("animationend", () => {
+            if (gameContainer.contains(drop)) {
+              gameContainer.removeChild(drop);
+            }
+          });
+
+          // Check collision
+          const checkCollision = setInterval(() => {
+            if (!gameContainer.contains(drop)) {
+              clearInterval(checkCollision);
+              return;
+            }
+
+            const dropRect = drop.getBoundingClientRect();
+            const shipleyRect = shipley.getBoundingClientRect();
+
+            if (
+              dropRect.bottom >= shipleyRect.top &&
+              dropRect.left < shipleyRect.right &&
+              dropRect.right > shipleyRect.left
+            ) {
+              score++;
+              scoreElement.textContent = score;
+              gameContainer.removeChild(drop);
+              clearInterval(checkCollision);
+            }
+          }, 50);
+        }
+
+        function startGame() {
+          if (gameActive) return;
+
+          gameActive = true;
+          score = 0;
+          scoreElement.textContent = score;
+          dropInterval = setInterval(createWaterDrop, 2000);
+          startButton.textContent = "Game Running";
+        }
+
+        function resetGame() {
+          gameActive = false;
+          clearInterval(dropInterval);
+          score = 0;
+          scoreElement.textContent = score;
+          shipleyPosition = 50;
+          shipley.style.left = "50%";
+          startButton.textContent = "Start Game";
+
+          // Remove all existing drops
+          const drops = document.querySelectorAll(".water-drop");
+          drops.forEach((drop) => drop.remove());
+        }
+
+        // Event Listeners
+        startButton.addEventListener("click", startGame);
+        resetButton.addEventListener("click", resetGame);
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft") {
+            moveShipley("left");
+          } else if (e.key === "ArrowRight") {
+            moveShipley("right");
+          }
+        });
+
+        // Touch/mouse controls
+        gameContainer.addEventListener("click", (e) => {
+          const rect = gameContainer.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          if (x < rect.width / 2) {
+            moveShipley("left");
+          } else {
+            moveShipley("right");
+          }
+        });
       });
     </script>
   </body>

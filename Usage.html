@@ -5,70 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Usage</title>
     <style>
-      .task-bar {
-        background-color: #778da9;
-        border-radius: 100px;
-        padding: 10px;
-        margin-left: 35%;
-        margin-right: 35%;
-        text-align: center;
-        font-family: verdana;
-        font-weight: bold;
-        font-size: 20px;
-        width: 30%;
-      }
-      .task-bar a {
-        margin: 0 10px;
-        text-decoration: none;
-        color: #343a40;
-      }
-      .content {
-        font-family: verdana;
-      }
-      .grid-container1 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Two columns */
-        gap: 20px; /* Space between items */
-      }
-      .grid-item {
-        padding: 20px;
-      }
-      .grid-item img {
-        max-width: 90%; /* Ensures the image fits within the grid item */
-        height: auto; /* Maintains aspect ratio */
-        border-radius: 10px;
-      }
-      p {
-        margin-left: 95px;
-        margin-right: 100px;
-        font-size: 25px;
-        width: 30ch; /* Limits the width to approximately 30 characters */
-        overflow-wrap: break-word; /* Ensures long words break and wrap */
-        font-family: verdana;
-        color: #1b263b;
-      }
-
-      h2 {
-        font-family: verdana;
-        font-size: 40px;
-        margin-left: 94px;
-        color: 0d1b2a;
-      }
-
-      h3 {
-        font-family: verdana;
-        font-size: 40px;
-        margin-left: 94px;
-        color: 0d1b2a;
-      }
-      .task-bar a:hover {
-        color: #0d1b2a;
+      :root {
+        --primary-color: #2d3436;
+        --secondary-color: #ffffff;
+        --accent-color: #6c5ce7;
+        --background-color: #f8f9fa;
+        --hover-color: #8f7ff7;
+        --text-color: #2d3436;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
 
       body {
-        background-color: #e0e1dd;
+        background-color: var(--background-color);
+        margin: 0;
+        padding: 0;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .task-bar {
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 20px;
+        margin: 0;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+      }
+
+      .task-bar a {
+        text-decoration: none;
+        color: var(--text-color);
+        font-size: 1rem;
+        font-weight: 500;
+        position: relative;
+        padding: 5px 0;
+      }
+
+      .task-bar a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent-color);
+        transition: width 0.3s ease;
+      }
+
+      .task-bar a:hover::after {
+        width: 100%;
+      }
+
+      .task-bar a:hover {
+        color: var(--accent-color);
+      }
+
+      .grid-container1 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 60px;
+        padding: 40px;
+        max-width: 1200px;
+        margin: 120px auto 40px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease forwards;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .grid-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .grid-item img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .grid-item img:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
+      }
+
+      .grid-item h2,
+      .grid-item h3 {
+        font-size: 2.5rem;
+        color: var(--text-color);
+        margin: 0 0 20px 0;
+        font-weight: 800;
+      }
+
+      .grid-item p {
+        font-size: 1.2rem;
+        color: var(--text-color);
+        margin: 0;
+        line-height: 1.8;
+        opacity: 0.9;
+        width: 100%;
+      }
+
+      .usage-card {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        transition: transform 0.3s ease;
+      }
+
+      .usage-card:hover {
+        transform: translateY(-5px);
+      }
+
+      @media (max-width: 768px) {
+        .grid-container1 {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          margin-top: 100px;
+        }
+
+        .grid-item img {
+          height: 300px;
+        }
+
+        .grid-item h2,
+        .grid-item h3 {
+          font-size: 2rem;
+        }
+
+        .grid-item p {
+          font-size: 1.1rem;
+        }
+
+        .task-bar {
+          padding: 15px;
+          gap: 20px;
+        }
       }
     </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="task-bar">
@@ -77,36 +174,39 @@
       <a href="Solutions.html">Solutions</a>
       <a href="Usage.html">Usage</a>
     </div>
-    <p></p>
 
     <div class="grid-container1">
       <div class="grid-item">
-        <h2>Power Usage at Gonzaga</h2>
-        <p>
-          On average an American classroom utilizes 10 kilowatt-hours (kWh) of
-          electricity per square foot on an annual basis. Our rough estimate has
-          Gonzaga at around 100,000 square feet, meaning that each year we use a
-          staggering 1,000,000 kilowatt-hours of electricity.
-        </p>
+        <div class="usage-card">
+          <h2>Power Usage at Gonzaga</h2>
+          <p>
+            On average an American classroom utilizes 10 kilowatt-hours (kWh) of
+            electricity per square foot on an annual basis. Our rough estimate
+            has Gonzaga at around 100,000 square feet, meaning that each year we
+            use a staggering 1,000,000 kilowatt-hours of electricity.
+          </p>
+        </div>
       </div>
       <div class="grid-item">
         <img src="field.png" alt="Field" />
       </div>
     </div>
-    <div class="grid-container1">
+    <div class="grid-container1" style="animation-delay: 0.2s">
       <div class="grid-item">
         <img src="solar.png" alt="Solar" />
       </div>
       <div class="grid-item">
-        <h3>Drawing Comparisons</h3>
-        <p>
-          Drawing some comparisons, the average American household uses 10,649
-          kilowatt-hours of electricity per year. This means that Gonzaga uses
-          the same amount of electricity as about 94 American households.
-          Furthermore, if applied electric vehicles a car with a 1,000,000
-          kilowatt-hour battery could drive around the circumference of the
-          world 133 times (24,901).
-        </p>
+        <div class="usage-card">
+          <h3>Drawing Comparisons</h3>
+          <p>
+            Drawing some comparisons, the average American household uses 10,649
+            kilowatt-hours of electricity per year. This means that Gonzaga uses
+            the same amount of electricity as about 94 American households.
+            Furthermore, if applied electric vehicles a car with a 1,000,000
+            kilowatt-hour battery could drive around the circumference of the
+            world 133 times (24,901).
+          </p>
+        </div>
       </div>
     </div>
   </body>
